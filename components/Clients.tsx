@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Client, ClinicalData } from '../types';
-import { Search, Crown, FileText, Plus, X, Gift, Droplets, Sun, Activity, Save } from 'lucide-react';
+import { Search, Crown, FileText, Plus, X, Gift, Droplets, Sun, Activity, Save, Edit2 } from 'lucide-react';
 
 interface ClientsProps {
   clients: Client[];
@@ -87,6 +87,11 @@ export const Clients: React.FC<ClientsProps> = ({ clients, addClient, updateClie
     c.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     c.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const openEditForm = (client: Client) => {
+    setFormData(client);
+    setIsFormOpen(true);
+  };
 
   const handleSaveClient = () => {
     if (formData.name && formData.phone) {
@@ -228,12 +233,21 @@ export const Clients: React.FC<ClientsProps> = ({ clients, addClient, updateClie
                     <p>📞 {client.phone}</p>
                     <p className="text-xs text-gray-400">🎂 {client.birthDate || 'Sin fecha'}</p>
                 </div>
-                <button 
-                    onClick={() => openHistory(client)}
-                    className="w-full py-2 border border-spa-200 rounded-lg text-spa-600 hover:bg-spa-50 text-sm font-medium transition-colors flex items-center justify-center gap-2"
-                >
-                    <FileText size={14} /> Ver Historia Clínica
-                </button>
+                <div className="flex gap-2">
+                    <button 
+                        onClick={() => openHistory(client)}
+                        className="flex-1 py-2 border border-spa-200 rounded-lg text-spa-600 hover:bg-spa-50 text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                    >
+                        <FileText size={14} /> Historia
+                    </button>
+                    <button 
+                        onClick={() => openEditForm(client)}
+                        className="px-3 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors flex items-center justify-center"
+                        title="Editar cliente"
+                    >
+                        <Edit2 size={14} />
+                    </button>
+                </div>
               </div>
             );
         })}
@@ -382,7 +396,7 @@ export const Clients: React.FC<ClientsProps> = ({ clients, addClient, updateClie
       {isFormOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
              <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
-                <h3 className="text-xl font-serif font-bold text-gray-800 mb-4">Datos del Paciente</h3>
+                <h3 className="text-xl font-serif font-bold text-gray-800 mb-4">{formData.id ? 'Editar Paciente' : 'Agregar Paciente'}</h3>
                 <div className="space-y-4">
                     <div>
                         <label className="text-xs font-bold text-gray-500">Nombre Completo</label>

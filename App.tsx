@@ -127,6 +127,10 @@ const App: React.FC = () => {
     }));
   };
 
+  const addProduct = (product: Product) => {
+    setProducts([...products, product]);
+  };
+
   return (
     <div className="min-h-screen bg-[#fdf8f6] text-gray-800 font-sans flex">
       <Sidebar 
@@ -171,6 +175,7 @@ const App: React.FC = () => {
             <Inventory 
               products={products} 
               updateStock={updateProductStock}
+              addProduct={addProduct}
             />
           )}
           {currentView === 'accounting' && (
